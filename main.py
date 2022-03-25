@@ -16,37 +16,37 @@ def send1(message):
     bot.send_message(chat_id=message.chat.id, text="- The Bot Is Running ....")
 @bot.message_handler(commands=['get'])
 def send(message):
-    uid = message.text.replace("/get ", '')
+    uid = '7869020'#message.text.replace("/get ", '')
     file = requests.get("https://pastebin.com/raw/0kPLPnxC").text.splitlines()
     numD = 0
     numL = 0
     numE = 0
     numW = 0
-    infoM = bot.send_message(chat_id=919505317, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
+    infoM = bot.send_message(chat_id=420953620, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
     while True:
         fil = file[numL]
-        url = requests.get(f"https://powerlesspopularcoolingfan.mohammedhaiderz.repl.co/?target={fil}&userid={uid}&submit=submit").text
+        url = requests.get(f"https://m0hmdhaider.000webhostapp.com/mido.php?target={fil}&userid={uid}&submit=submit").text
         if "DONE :" in url:
             numF1 = url.split("DONE : ")[1]
             numF = (numF1[0] + numF1[1] + numF1[2] + numF1[3]).replace("<", '')
-            bot.send_message(chat_id= 919505317, text=f"- Done Send Followers Count : {numF} ..")
+            bot.send_message(chat_id= 420953620, text=f"- ID : {uid}\n- Done Send Followers Count : {numF} ..")
             numD += 1
             numL += 1
-            bot.edit_message_text(chat_id= 919505317 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
+            bot.edit_message_text(chat_id= 420953620 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
 
         elif "Sending orders less than 150 is temporarily disabled. Please try again in another hour." in url:
             numL += 1
             numE += 1
-            bot.edit_message_text(chat_id= 919505317 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
+            bot.edit_message_text(chat_id= 420953620 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
 
         elif '"You have to wait until the previous order is completed."' in url:
             numW +=1
-            bot.send_message(chat_id= 919505317, text= f"ID : {uid}\n- Sleep 15 minutes ....")
-            bot.edit_message_text(chat_id= 919505317 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
+            bot.send_message(chat_id= 420953620, text= f"ID : {uid}\n- Sleep 15 minutes ....")
+            bot.edit_message_text(chat_id= 420953620 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
             time.sleep(900)
         else:
             numL += 1
-            bot.edit_message_text(chat_id=919505317, message_id=infoM.message_id,text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
+            bot.edit_message_text(chat_id=420953620, message_id=infoM.message_id,text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
