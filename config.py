@@ -1,2 +1,2 @@
-BOT_TOKEN = "5258593695:AAEXa4z_d_LRj6XN_tyulkil8RDeR2mCC_0"
-APP_URL = "https://mmdhsbdbot.herokuapp.com/" + BOT_TOKEN
+BOT_TOKEN = "5285309268:AAHHPhigkibAd57942s_QsBnoAWMikAdRWE"
+APP_URL = "https://temidolebot.herokuapp.com/" + BOT_TOKEN
