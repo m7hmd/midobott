@@ -12,19 +12,18 @@ bot = telebot.TeleBot(BOT_TOKEN)
 server = Flask(__name__)
 logger = telebot.logger
 logger.setLevel(logging.DEBUG)
-dic = {}
+f = []
 b = '1234567890qwertyuiopasdfghjklzxcvbnm-_'
 a = 'qwertyuiopasdfghjklzxcvbnmcvbnm'
-for m in a:
-  dic.setdefault(m, [])
+
 for g in a:
     for i in b:
-        dic[g].append(f"{i}{g}{g}{g}{g}{g}")
-        dic[g].append(f"{g}{i}{g}{g}{g}{g}")
-        dic[g].append(f"{g}{g}{i}{g}{g}{g}")
-        dic[g].append(f"{g}{g}{g}{i}{g}{g}")
-        dic[g].append(f"{g}{g}{g}{g}{i}{g}")
-        dic[g].append(f"{g}{g}{g}{g}{g}{i}")
+        f.append(f"{i}{g}{g}{g}{g}{g}")
+        f.append(f"{g}{i}{g}{g}{g}{g}")
+        f.append(f"{g}{g}{i}{g}{g}{g}")
+        f.append(f"{g}{g}{g}{i}{g}{g}")
+        f.append(f"{g}{g}{g}{g}{i}{g}")
+        f.append(f"{g}{g}{g}{g}{g}{i}")
 
 
 bot = telebot.TeleBot("5285309268:AAHHPhigkibAd57942s_QsBnoAWMikAdRWE")
@@ -64,9 +63,7 @@ def S(message):
         bot.send_message(message.chat.id, "Send List ......")
         print("hi")
     else:
-        for item in dic:
-          threading.Thread(target=check, args=[dic[item], message]).start()
-          print(dic[item][0] + " - Started !")
+        threading.Thread(target=check, args=[f, message]).start()
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
