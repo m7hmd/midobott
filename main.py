@@ -6,47 +6,66 @@ import logging
 from config import *
 from flask import Flask, request
 
-BOT_TOKEN = "5258593695:AAEXa4z_d_LRj6XN_tyulkil8RDeR2mCC_0"
+BOT_TOKEN = "5285309268:AAHHPhigkibAd57942s_QsBnoAWMikAdRWE"
 bot = telebot.TeleBot(BOT_TOKEN)
 server = Flask(__name__)
 logger = telebot.logger
 logger.setLevel(logging.DEBUG)
-@bot.message_handler(commands=['start'])
-def send1(message):
-    bot.send_message(chat_id=message.chat.id, text="- The Bot Is Running ....")
-@bot.message_handler(commands=['get'])
-def send(message):
-    uid = '7869020'#message.text.replace("/get ", '')
-    file = requests.get("https://pastebin.com/raw/0kPLPnxC").text.splitlines()
-    numD = 0
-    numL = 0
-    numE = 0
-    numW = 0
-    infoM = bot.send_message(chat_id=420953620, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
-    while True:
-        fil = file[numL]
-        url = requests.get(f"https://m0hmdhaider.000webhostapp.com/mido.php?target={fil}&userid={uid}&submit=submit").text
-        if "DONE :" in url:
-            numF1 = url.split("DONE : ")[1]
-            numF = (numF1[0] + numF1[1] + numF1[2] + numF1[3]).replace("<", '')
-            bot.send_message(chat_id= 420953620, text=f"- ID : {uid}\n- Done Send Followers Count : {numF} ..")
-            numD += 1
-            numL += 1
-            bot.edit_message_text(chat_id= 420953620 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
+dic = {}
+b = '1234567890qwertyuiopasdfghjklzxcvbnm-_'
+a = 'qwertyuiopasdfghjklzxcvbnmcvbnm'
+for m in a:
+  dic.setdefault(m, [])
+for g in a:
+    for i in b:
+        dic[g].append(f"{i}{g}{g}{g}{g}{g}")
+        dic[g].append(f"{g}{i}{g}{g}{g}{g}")
+        dic[g].append(f"{g}{g}{i}{g}{g}{g}")
+        dic[g].append(f"{g}{g}{g}{i}{g}{g}")
+        dic[g].append(f"{g}{g}{g}{g}{i}{g}")
+        dic[g].append(f"{g}{g}{g}{g}{g}{i}")
 
-        elif "Sending orders less than 150 is temporarily disabled. Please try again in another hour." in url:
-            numL += 1
-            numE += 1
-            bot.edit_message_text(chat_id= 420953620 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
 
-        elif '"You have to wait until the previous order is completed."' in url:
-            numW +=1
-            bot.send_message(chat_id= 420953620, text= f"ID : {uid}\n- Sleep 15 minutes ....")
-            bot.edit_message_text(chat_id= 420953620 , message_id=infoM.message_id, text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
-            time.sleep(900)
-        else:
-            numL += 1
-            bot.edit_message_text(chat_id=420953620, message_id=infoM.message_id,text=f"- ID : {uid}\nDone Check : {numL}\nDone Send : {numD}\nDon't Have Coins : {numE}\nDon't Send : {numW}")
+bot = telebot.TeleBot("5285309268:AAHHPhigkibAd57942s_QsBnoAWMikAdRWE")
+#bot.send_message(chat_id=-1001637373978, text="hello")
+print("bot started .. ")
+def check(listt, message):
+  x = 1
+  for username in listt:
+    username1 = username.replace("@", "")
+    url = "https://tamtam.chat/" + str(username1)
+    headers = {
+      "User-Agent": generate_user_agent(),
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
+    response = requests.get(url, headers=headers)
+    if "Public channel" in response.text or "Open channel" in response.text:
+      if 'data-url="' in response.text :
+          if response.text.split("<h1>")[1].split("</h1>")[0] == "Zaid":
+                responseTime = requests.get(str((response.text.split('data-url="')[1]).split('">')[0])).text.split("<time>")[1].split(" </time>")[0]
+                time = responseTime.replace('января в', '1').replace('февраля в', '2').replace('марта в', '3').replace('мая', '5').replace('июля', '7').replace('августа', '8').replace('октября', '10').replace('апреля', '4').replace('сентября', '9').replace('ноября', '11').replace('декабря', '12').replace(' ', '-')
+                bot.send_message(chat_id=-1001637373978, text=f"URL :: {url}\nTime :: {time}")
+      else:
+          if response.text.split("<h1>")[1].split("</h1>")[0] == "Zaid":
+                bot.send_message(chat_id=-1001637373978, text=f"URL :: {url}\nTime :: Don't Have Post")
+    print(f'[{str(x)}] {username1}')
+    x += 1
+  bot.send_message(chat_id=919505317, text='Done : '+listt[0])
+
+
+@bot.message_handler(content_types=["text"])
+def S(message):
+    if message.text == "/start":
+        bot.send_message(message.chat.id, f"send ...")
+        print("hi")
+    elif "/" in message.text:
+        bot.send_message(message.chat.id, "Send List ......")
+        print("hi")
+    else:
+        for item in dic:
+          threading.Thread(target=check, args=[dic[item], message]).start()
+          print(dic[item][0] + " - Started !")
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
@@ -58,5 +77,5 @@ def redirect_message():
 
 if __name__ == "__main__":
     bot.remove_webhook()
-    bot.set_webhook(url="https://mmdhsbdbot.herokuapp.com/" + str(BOT_TOKEN))
+    bot.set_webhook(url="https://temidolebot.herokuapp.com/" + str(BOT_TOKEN))
     server.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
