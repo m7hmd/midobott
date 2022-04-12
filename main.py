@@ -12,7 +12,8 @@ server = Flask(__name__)
 logger = telebot.logger
 logger.setLevel(logging.DEBUG)
 
-def chCh(message):
+@bot.message_handler(content_types=["text"])
+def S(message):
     if message.text == "/start":
         bot.send_message(message.chat.id, "Send List ......")
     elif "/" in message.text:
@@ -23,10 +24,10 @@ def chCh(message):
             username1 = username.replace("@", "")
             url = "https://t.me/" + str(username1)
             headers = {
-                    "User-Agent": generate_user_agent(),
-                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-                    "Accept-Encoding": "gzip, deflate, br",
-                    "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
+                "User-Agent": generate_user_agent(),
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
             response = requests.get(url, headers=headers).text
             if "Send Message" in response:
                 if "bot" not in username1:
@@ -39,9 +40,6 @@ def chCh(message):
                 print("hello")
             time.sleep(5)
         bot.send_message(message.chat.id, f"Done list begin with {mes[0]}")
-@bot.message_handler(content_types=["text"])
-def S(message):
-    threading.Thread(target=chCh, args=[message])
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
