@@ -1,69 +1,47 @@
-import requests, user_agent, json, flask, telebot, random, os, sys, time
+import requests, user_agent, json, flask, telebot, random, os, sys, time, threading
 import telebot
-import threading
 from telebot import types
 from user_agent import generate_user_agent
 import logging
 from config import *
 from flask import Flask, request
 
-BOT_TOKEN = "5285309268:AAHHPhigkibAd57942s_QsBnoAWMikAdRWE"
+BOT_TOKEN = "5295940154:AAGZc95-F6VltntXMGDGIsyRb21qI8EIZwQ"
 bot = telebot.TeleBot(BOT_TOKEN)
 server = Flask(__name__)
 logger = telebot.logger
 logger.setLevel(logging.DEBUG)
-f = []
-b = '1234567890qwertyuiopasdfghjklzxcvbnm-_'
-a = 'qwertyuiopasdfghjklzxcvbnmcvbnm'
 
-for g in a:
-    for i in b:
-        f.append(f"{i}{g}{g}{g}{g}{g}")
-        f.append(f"{g}{i}{g}{g}{g}{g}")
-        f.append(f"{g}{g}{i}{g}{g}{g}")
-        f.append(f"{g}{g}{g}{i}{g}{g}")
-        f.append(f"{g}{g}{g}{g}{i}{g}")
-        f.append(f"{g}{g}{g}{g}{g}{i}")
-
-
-bot = telebot.TeleBot("5285309268:AAHHPhigkibAd57942s_QsBnoAWMikAdRWE")
-#bot.send_message(chat_id=-1001637373978, text="hello")
-print("bot started .. ")
-def check(listt, message):
-  x = 1
-  for username in listt:
-    username1 = username.replace("@", "")
-    url = "https://tamtam.chat/" + str(username1)
-    headers = {
-      "User-Agent": generate_user_agent(),
-      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-      "Accept-Encoding": "gzip, deflate, br",
-      "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
-    response = requests.get(url, headers=headers)
-    if "Public channel" in response.text or "Open channel" in response.text:
-      if 'data-url="' in response.text :
-          if response.text.split("<h1>")[1].split("</h1>")[0] == "Zaid":
-                responseTime = requests.get(str((response.text.split('data-url="')[1]).split('">')[0])).text.split("<time>")[1].split(" </time>")[0]
-                time = responseTime.replace('января в', '1').replace('февраля в', '2').replace('марта в', '3').replace('мая', '5').replace('июля', '7').replace('августа', '8').replace('октября', '10').replace('апреля', '4').replace('сентября', '9').replace('ноября', '11').replace('декабря', '12').replace(' ', '-')
-                bot.send_message(chat_id=-1001637373978, text=f"URL :: {url}\nTime :: {time}")
-      else:
-          if response.text.split("<h1>")[1].split("</h1>")[0] == "Zaid":
-                bot.send_message(chat_id=-1001637373978, text=f"URL :: {url}\nTime :: Don't Have Post")
-    print(f'[{str(x)}] {username1}')
-    x += 1
-  bot.send_message(chat_id=919505317, text='Done : '+listt[0])
-
-
-@bot.message_handler(content_types=["text"])
-def S(message):
+def chCh(message):
     if message.text == "/start":
-        bot.send_message(message.chat.id, f"send ...")
-        print("hi")
+        bot.send_message(message.chat.id, "Send List ......")
     elif "/" in message.text:
         bot.send_message(message.chat.id, "Send List ......")
-        print("hi")
     else:
-        threading.Thread(target=check, args=[f, message]).start()
+        mes = message.text.splitlines()
+        for username in mes:
+            username1 = username.replace("@", "")
+            url = "https://t.me/" + str(username1)
+            headers = {
+                    "User-Agent": generate_user_agent(),
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                    "Accept-Encoding": "gzip, deflate, br",
+                    "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
+            response = requests.get(url, headers=headers).text
+            if "Send Message" in response:
+                if "bot" not in username1:
+                    if "@" in username:
+                        bot.send_message(message.chat.id, f"{username} is account")
+                    else:
+                        bot.send_message(message.chat.id, f"@{username} is account")
+
+            elif "subscribers" in response or "Preview channel" in response or "subscriber":
+                print("hello")
+            time.sleep(5)
+        bot.send_message(message.chat.id, f"Done list begin with {mes[0]}")
+@bot.message_handler(content_types=["text"])
+def S(message):
+    threading.Thread(target=chCh, args=[message])
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
