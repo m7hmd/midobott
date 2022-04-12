@@ -12,14 +12,13 @@ server = Flask(__name__)
 logger = telebot.logger
 logger.setLevel(logging.DEBUG)
 
-@bot.message_handler(content_types=["text"])
-def S(message):
-    if message.text == "/start":
-        bot.send_message(message.chat.id, "Send List ......")
+def S(msgt, mesgchat):
+    if msgt == "/start":
+        bot.send_message(mesgchat, "Send List ......")
     elif "/" in message.text:
-        bot.send_message(message.chat.id, "Send List ......")
+        bot.send_message(mesgchat, "Send List ......")
     else:
-        mes = message.text.splitlines()
+        mes = msgt.splitlines()
         for username in mes:
             username1 = username.replace("@", "")
             url = "https://t.me/" + str(username1)
@@ -32,14 +31,18 @@ def S(message):
             if "Send Message" in response:
                 if "bot" not in username1:
                     if "@" in username:
-                        bot.send_message(message.chat.id, f"{username} is account")
+                        bot.send_message(mesgchat, f"{username} is account")
                     else:
-                        bot.send_message(message.chat.id, f"@{username} is account")
+                        bot.send_message(mesgchat, f"@{username} is account")
 
             elif "subscribers" in response or "Preview channel" in response or "subscriber":
                 print("hello")
             time.sleep(5)
-        bot.send_message(message.chat.id, f"Done list begin with {mes[0]}")
+        bot.send_message(mesgchat, f"Done list begin with {mes[0]}")
+
+@bot.message_handler(content_types=["text"])
+def Send(message):
+    threading.Thread(target=S,args=[message.text, message.chat.id]).start()
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
